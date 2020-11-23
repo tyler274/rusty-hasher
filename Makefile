@@ -32,7 +32,7 @@ test_threadpool: $(addprefix bin/,$(TESTS_THREADPOOL))
 	tests/test_pool.sh
 
 passwords.txt: bin/password_cracker hashes.txt
-	nohup $< < hashes.txt 2> /dev/null | tee $@
+	nohup $< < hashes.txt | tee $@
 
 bin/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@

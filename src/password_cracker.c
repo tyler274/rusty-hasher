@@ -28,8 +28,7 @@ static inline bool hashes_match(const char *password, const char *hash) {
 }
 
 int main(void) {
-    // Read in the hashes from standard in
-    fprintf(stderr, "Paste your hashes below:\n");
+    // Read in the hashes from the standard input
     char *line = NULL;
     size_t line_capacity = 0;
     while (getline(&line, &line_capacity, stdin) > 0 && line[0] != '\n') {
@@ -47,7 +46,6 @@ int main(void) {
         hashes[hash_count++] = hash;
     }
     free(line);
-    fprintf(stderr, "Cracking passwords...\n");
 
     // TODO (student): Use your threadpool to recover the passwords from the hashes.
     //                 You may assume the provided dictionary.h includes all the
