@@ -2,7 +2,7 @@
 
 if loc="$(type -p "clang-format")" && [[ -x $loc ]]; then
     for name in $(git diff --cached --name-only --diff-filter=ACM); do
-        if echo $name | grep -Eq "\.[ch]$" | grep -v dictionary_words.h | grep -v etc_shadow.h; then
+        if echo $name | grep -Eq "\.[ch]$"; then
             echo "Formatting ${name}..."
             clang-format -i $name
         fi

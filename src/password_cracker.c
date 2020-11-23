@@ -32,13 +32,11 @@ int main(void) {
     char *line = NULL;
     size_t line_capacity = 0;
     while (getline(&line, &line_capacity, stdin) > 0 && line[0] != '\n') {
-        hashes = realloc(hashes, sizeof(char*[hash_count + 1]));
+        hashes = realloc(hashes, sizeof(char * [hash_count + 1]));
         assert(hashes != NULL);
-        assert(
-            strlen(line) == HASH_LENGTH + 1 &&
-            strncmp(line, HASH_START, strlen(HASH_START)) == 0 &&
-            line[HASH_LENGTH] == '\n'
-        );
+        assert(strlen(line) == HASH_LENGTH + 1 &&
+               strncmp(line, HASH_START, strlen(HASH_START)) == 0 &&
+               line[HASH_LENGTH] == '\n');
         char *hash = malloc(sizeof(char[HASH_LENGTH + 1]));
         assert(hash != NULL);
         memcpy(hash, line, sizeof(char[HASH_LENGTH]));
