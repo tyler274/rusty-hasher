@@ -53,20 +53,24 @@ int main() {
     pthread_t enqueue_threads[NUM_THREADS];
     pthread_t dequeue_thread;
 
-    pthread_create(&dequeue_thread, NULL, dequeue_worker, NULL);
+    int result = pthread_create(&dequeue_thread, NULL, dequeue_worker, NULL);
+    assert(result == 0);
     sleep(5);
 
     for (size_t i = 0; i < NUM_THREADS; i++) {
         size_t *thread_id = malloc(sizeof(size_t));
         assert(thread_id != NULL);
         *thread_id = i;
-        pthread_create(&enqueue_threads[i], NULL, enqueue_worker, thread_id);
+        result = pthread_create(&enqueue_threads[i], NULL, enqueue_worker, thread_id);
+        assert(result == 0);
     }
 
     for (size_t i = 0; i < NUM_THREADS; i++) {
-        pthread_join(enqueue_threads[i], NULL);
+        result = pthread_join(enqueue_threads[i], NULL);
+        assert(result == 0);
     }
-    pthread_join(dequeue_thread, NULL);
+    result = pthread_join(dequeue_thread, NULL);
+    assert(result == 0);
 
     queue_free(queue);
 }

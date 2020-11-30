@@ -58,17 +58,21 @@ int main() {
         size_t *thread_id = malloc(sizeof(size_t));
         assert(thread_id != NULL);
         *thread_id = i;
-        pthread_create(&enqueue_threads[i], NULL, enqueue_worker, thread_id);
+        result = pthread_create(&enqueue_threads[i], NULL, enqueue_worker, thread_id);
+        assert(result == 0);
     }
     for (size_t i = 0; i < NUM_POP_THREADS; i++) {
-        pthread_create(&dequeue_threads[i], NULL, dequeue_worker, NULL);
+        result = pthread_create(&dequeue_threads[i], NULL, dequeue_worker, NULL);
+        assert(result == 0);
     }
 
     for (size_t i = 0; i < NUM_PUSH_THREADS; i++) {
-        pthread_join(enqueue_threads[i], NULL);
+        result = pthread_join(enqueue_threads[i], NULL);
+        assert(result == 0);
     }
     for (size_t i = 0; i < NUM_POP_THREADS; i++) {
-        pthread_join(dequeue_threads[i], NULL);
+        result = pthread_join(dequeue_threads[i], NULL);
+        assert(result == 0);
     }
 
     result = pthread_mutex_destroy(&num_seen_mutex);
