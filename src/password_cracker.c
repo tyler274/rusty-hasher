@@ -33,12 +33,19 @@ int main(void) {
     // Read in the hashes from the standard input
     char *line = NULL;
     size_t line_capacity = 0;
+    // Stop when the end of the input or an empty line is reached
     while (getline(&line, &line_capacity, stdin) > 0 && line[0] != '\n') {
+        // Check that the line looks like a hash
+        size_t line_length = strlen(line);
+        assert(
+            line_length == HASH_LENGTH ||
+            (line_length == HASH_LENGTH + 1 && line[HASH_LENGTH] == '\n')
+        );
+        assert(memcmp(line, HASH_START, sizeof(HASH_START) - sizeof(char)) == 0);
+
+        // Extend the hashes array and add the hash to it
         hashes = realloc(hashes, sizeof(char * [hash_count + 1]));
         assert(hashes != NULL);
-        assert(strlen(line) == HASH_LENGTH + 1 &&
-               strncmp(line, HASH_START, strlen(HASH_START)) == 0 &&
-               line[HASH_LENGTH] == '\n');
         char *hash = malloc(sizeof(char[HASH_LENGTH + 1]));
         assert(hash != NULL);
         memcpy(hash, line, sizeof(char[HASH_LENGTH]));
