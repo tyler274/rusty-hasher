@@ -1,9 +1,12 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "thread_pool.h"
 
+const time_t NS_PER_SEC = 1e9;
 const size_t NUM_SLEEPS = 10;
 
 void usage(char *argv[]) {
@@ -26,6 +29,10 @@ int main(int argc, char *argv[]) {
         usage(argv);
     }
 
+    struct timespec start;
+    int result = clock_gettime(CLOCK_REALTIME, &start);
+    assert(result == 0);
+
     thread_pool_t *pool = thread_pool_init(num_threads);
 
     for (size_t i = 0; i < NUM_SLEEPS; i++) {
@@ -33,4 +40,11 @@ int main(int argc, char *argv[]) {
     }
 
     thread_pool_finish(pool);
+
+    struct timespec end;
+    result = clock_gettime(CLOCK_REALTIME, &end);
+    assert(result == 0);
+    time_t duration = end.tv_sec - start.tv_sec +
+                      (end.tv_nsec - start.tv_nsec) / NS_PER_SEC;
+    printf("%lu\n", duration);
 }
