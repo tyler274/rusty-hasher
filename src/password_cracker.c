@@ -24,7 +24,9 @@ static inline bool hashes_match(const char *password, const char *hash) {
     struct crypt_data data;
     memset(&data, 0, sizeof(data));
     char *hashed = crypt_r(password, salt, &data);
-    return strcmp(&hashed[SALT_LENGTH], &hash[SALT_LENGTH]) == 0;
+    char *hashed_hash = &hashed[SALT_LENGTH];
+    const char *hash_hash = &hash[SALT_LENGTH];
+    return memcmp(hashed_hash, hash_hash, sizeof(char[HASH_LENGTH - SALT_LENGTH])) == 0;
 }
 
 int main(void) {
