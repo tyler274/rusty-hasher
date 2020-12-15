@@ -38,7 +38,7 @@ void *queue_dequeue(queue_t *queue);
 
 /**
  * Frees all resources associated with a heap-allocated queue.
- * The queue must already be empty.
+ * You may assume that the queue is already empty.
  *
  * @param queue a queue returned from queue_init()
  */
