@@ -37,7 +37,7 @@ test_threadpool: $(TESTS_THREADPOOL:=-result)
 	@echo "\e[32mALL THREADPOOL TESTS PASS!\e[39m"
 
 passwords.txt: bin/password_cracker hashes.txt
-	nohup $< < hashes.txt | tee $@
+	nohup stdbuf -oL $< < hashes.txt > $@ 2>&1
 
 bin/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
