@@ -15,7 +15,7 @@ else
 endif
 
 TESTS_SQUEUE = squeue_single_fill squeue_push_pop
-TESTS_MQUEUE = mqueue_push_pop mqueue_empty
+TESTS_MQUEUE = mqueue_push_pop mqueue_empty mqueue_multiple_queues
 PRIMES_THREADS = 1 2 4 8 16 32 64
 SLEEPERS = 10
 SLEEPERS_THREADS=$(shell seq 1 $(SLEEPERS))
