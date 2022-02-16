@@ -1,0 +1,12 @@
+{
+    "makefile.extensionOutputFolder": "./.vscode",
+    "files.associations": {
+        "queue": "c",
+        "pthread.h": "c",
+        "type_traits": "c",
+        "pthreadtypes.h": "c",
+        "cstdlib": "c",
+        "queue.h": "c"
+    },
+    "C_Cpp.intelliSenseEngineFallback": "Enabled"
+}

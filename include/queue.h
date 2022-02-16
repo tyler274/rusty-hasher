@@ -6,6 +6,8 @@
 /** A FIFO queue */
 typedef struct queue queue_t;
 
+typedef struct queue_node queue_node_t;
+
 /**
  * Creates a new heap-allocated FIFO queue. The queue is initially empty.
  *
