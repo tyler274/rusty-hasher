@@ -132,7 +132,8 @@ void check_word_variants(void *dictionary_word) {
     for (size_t i = 0; i < variants.len; i++) {
         for (size_t j = 0; j < hash_count; j++) {
             if (hashes_match(variants.words[i], hashes[j])) {
-                printf("%s:%s\n", variants.words[i], hashes[j]);
+                // printf("%s:%s\n", variants.words[i], hashes[j]);
+                printf("%s\n", variants.words[i]);
             }
         }
     }
