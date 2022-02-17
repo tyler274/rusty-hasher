@@ -15,12 +15,13 @@ struct thread_pool {
     size_t num_threads;
 
     queue_t *work_queue;
-    pthread_cond_t work_in_queue_cond;
+    // pthread_cond_t work_in_queue_cond;
 
-    bool in_use;
+    // bool in_use;
 };
 
-void *get_work_from_queue(thread_pool_t *thread_pool) {
+void *get_work_from_queue(void *pool) {
+    thread_pool_t *thread_pool = (thread_pool_t *) pool;
     task_t *task = NULL;
     for (task = (task_t *) queue_dequeue(thread_pool->work_queue); task != NULL;
          task = (task_t *) queue_dequeue(thread_pool->work_queue)) {
@@ -58,13 +59,13 @@ thread_pool_t *thread_pool_init(size_t num_worker_threads) {
     for (size_t i = 0; i < thread_pool->num_threads; i++) {
         // queue_enqueue(thread_pool->work_queue, NULL);
         int pthread_error = pthread_create(&thread_pool->threads[i], NULL,
-                                           get_work_from_queue, thread_pool);
+                                           &get_work_from_queue, thread_pool);
         assert(pthread_error == 0);
     }
 
-    pthread_cond_init(&thread_pool->work_in_queue_cond, NULL);
+    // pthread_cond_init(&thread_pool->work_in_queue_cond, NULL);
 
-    thread_pool->in_use = true;
+    // thread_pool->in_use = true;
 
     return thread_pool;
 }
@@ -82,7 +83,6 @@ void thread_pool_add_work(thread_pool_t *pool, work_function_t function, void *a
     assert(task != NULL);
     task->function = function;
     task->aux = aux;
-    assert(function == 0x4ca930);
     queue_enqueue(pool->work_queue, task);
 }
 
