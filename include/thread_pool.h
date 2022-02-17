@@ -16,6 +16,8 @@ typedef struct thread_pool thread_pool_t;
 /** A function that can run on a thread in a thread pool */
 typedef void (*work_function_t)(void *aux);
 
+typedef struct task task_t;
+
 /**
  * Creates a new heap-allocated thread pool with the given number of worker threads.
  * All worker threads should start immediately so they can perform work

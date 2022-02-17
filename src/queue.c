@@ -114,7 +114,6 @@ static void release_read_lock(queue_t *queue) {
     pthread_mutex_unlock(&queue->mutex);
 }
 
-// TODO (student): Write this!
 /**
  * Creates a new heap-allocated FIFO queue. The queue is initially empty.
  *
@@ -320,11 +319,9 @@ void queue_free(queue_t *queue) {
     assert(queue->threads_reading == 0);
     // free the pthread items
     // TODO: make sure this doesnt footgun threads
-    // pthread_mutex_destroy(&queue->mutex);
+    pthread_mutex_destroy(&queue->mutex);
     pthread_cond_destroy(&queue->reading_cond);
     pthread_cond_destroy(&queue->writing_cond);
-    // does the mutes need to be freed last?
-    pthread_mutex_destroy(&queue->mutex);
     // free the heap allocated queue itself.
     free(queue);
 }

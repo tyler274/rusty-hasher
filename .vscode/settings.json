@@ -6,7 +6,8 @@
         "type_traits": "c",
         "pthreadtypes.h": "c",
         "cstdlib": "c",
-        "queue.h": "c"
+        "queue.h": "c",
+        "functional": "c"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "makefile.launchConfigurations": [
