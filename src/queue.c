@@ -98,10 +98,16 @@ static void release_read_lock(queue_t *queue) {
     // lock the queue's mutex for this notification.
     pthread_mutex_lock(&queue->mutex);
     // decrement the count of the number of threads reading the queue.
-    queue->threads_reading -= 1;
-    // If there are no other threads reading, just broadcast to the threads waiting for a
-    // write lock as any thread wanting to read will need to get a lock anyway.
+    if (queue->threads_reading - 1 >= 0) {
+        queue->threads_reading -= 1;
+    }
+
+    assert(queue->threads_reading >= 0);
+
+    // If there are no other threads reading, just broadcast to the threads waiting
+    // for a write lock as any thread wanting to read will need to get a lock anyway.
     if (queue->threads_reading == 0) {
+        pthread_cond_broadcast(&queue->reading_cond);
         pthread_cond_broadcast(&queue->writing_cond);
     }
     // release the lock we took at the start.
@@ -120,7 +126,7 @@ queue_t *queue_init(void) {
     if (queue == NULL) {
         return NULL;
     }
-    queue->in_use = true;
+
     queue->head = NULL;
     queue->tail = NULL;
 
@@ -135,6 +141,9 @@ queue_t *queue_init(void) {
 
     // There are zero threads reading the queue at initialization.
     queue->threads_reading = 0;
+
+    // Set this last otherwise the threads get eager?
+    queue->in_use = true;
 
     return queue;
 }
@@ -152,7 +161,7 @@ queue_t *queue_init(void) {
  * it was called for a non empty queue.
  */
 static int initialize_head_node(queue_t *queue, void *content_p) {
-    if (queue == NULL || content_p == NULL || queue->head != NULL ||
+    if (queue == NULL /*|| content_p == NULL*/ || queue->head != NULL ||
         queue->tail != NULL) {
         // Do nothing if this is called on a non-empty queue.
         // Return 1 to let the caller know this was called on a non-empty queue.
@@ -166,6 +175,7 @@ static int initialize_head_node(queue_t *queue, void *content_p) {
     queue->head->next = NULL;
     // set the tail node to be the head node as that is the initital configuration.
     queue->tail = queue->head;
+    queue->len = 1;
 
     // Return 0 as all is well.
     return 0;
@@ -183,7 +193,9 @@ static int initialize_head_node(queue_t *queue, void *content_p) {
 void queue_enqueue(queue_t *queue, void *value) {
     // If the queue is flagged for clean up or either of the arguments are NULL pointers
     // just return (for now).
-    if (queue == NULL || value == NULL || !queue->in_use) {
+    // Ok the first value queued by the multithreaded tester is 0 which evaluates as NULL
+    // here and messes those up. So always queue something even if its a null/0 value.
+    if (queue == NULL /*|| value == NULL*/ || !queue->in_use) {
         // TODO: rewrite API to have some error handling/acknowledgement.
         return;
     }
@@ -194,7 +206,7 @@ void queue_enqueue(queue_t *queue, void *value) {
         // TODO: error handling.
         return;
     }
-    else if (queue->tail == NULL || queue->head == NULL) {
+    else if (queue->head == NULL || queue->tail == NULL) {
         int i = initialize_head_node(queue, value);
         assert(i == 0);
     }
@@ -220,6 +232,9 @@ void queue_enqueue(queue_t *queue, void *value) {
             // Set the queue's tail to be the node we have now enqueued as the back of the
             // queue.
             queue->tail = node_to_enqueue;
+
+            assert(queue->len + 1 < __SIZE_MAX__);
+            queue->len += 1;
         }
     }
     // Release the lock we took to write to the queue.
@@ -254,6 +269,7 @@ void *queue_dequeue(queue_t *queue) {
             free(queue->head);
             queue->head = NULL;
             queue->tail = NULL;
+            queue->len = 0;
         }
         else {
             // Get the next node in the queeu, and free the prior head, and set the new
@@ -262,6 +278,8 @@ void *queue_dequeue(queue_t *queue) {
             free(queue->head);
             next_node->previous = NULL;
             queue->head = next_node;
+            assert(queue->len - 1 >= 0);
+            queue->len -= 1;
         }
     }
     // Release the write lock we took.
@@ -281,28 +299,32 @@ void queue_free(queue_t *queue) {
         return;
     }
 
-    // TODO: lock queue for writing
-
+    get_write_lock_enqueue(queue);
     if (queue->in_use) {
         queue_node_t *next_node;
 
         for (queue_node_t *current_node = queue->head;
-             current_node != NULL && current_node <= queue->tail;
-             current_node = current_node->next) {
+             current_node != NULL /*&& current_node <= queue->tail*/;
+             current_node = next_node) {
+            next_node = current_node->next;
             free(current_node);
         }
 
         queue->head = NULL;
         queue->tail = NULL;
-        // free the pthread items
-        // TODO: make sure this doesnt footgun threads
-        pthread_mutex_destroy(&queue->mutex);
-        pthread_cond_destroy(&queue->reading_cond);
-        pthread_cond_destroy(&queue->writing_cond);
-        // does the mutes need to be freed last?
 
         queue->in_use = false;
     }
+    release_write_lock(queue);
+
+    assert(queue->threads_reading == 0);
+    // free the pthread items
+    // TODO: make sure this doesnt footgun threads
+    // pthread_mutex_destroy(&queue->mutex);
+    pthread_cond_destroy(&queue->reading_cond);
+    pthread_cond_destroy(&queue->writing_cond);
+    // does the mutes need to be freed last?
+    pthread_mutex_destroy(&queue->mutex);
     // free the heap allocated queue itself.
     free(queue);
 }

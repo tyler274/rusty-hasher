@@ -8,5 +8,12 @@
         "cstdlib": "c",
         "queue.h": "c"
     },
-    "C_Cpp.intelliSenseEngineFallback": "Enabled"
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/tyler274/Code/cs24/project06-tport/bin",
+            "binaryPath": "/home/tyler274/Code/cs24/project06-tport/bin/mqueue_multiple_queues",
+            "binaryArgs": []
+        }
+    ]
 }
