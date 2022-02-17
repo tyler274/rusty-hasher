@@ -71,50 +71,6 @@ static void release_write_lock(queue_t *queue) {
 }
 
 /**
- * @brief Gets a reading lock.
- *
- * @param queue the queue to get a read lock for.
- */
-static void get_read_lock(queue_t *queue) {
-    // yoink our lock from the mutex.
-    pthread_mutex_lock(&queue->mutex);
-    // wait on the read condition if there queue's head is NULL (queue is empty) or until
-    // the queue is flagged as no longer in use.
-    while (queue->in_use && queue->head == NULL) {
-        pthread_cond_wait(&queue->reading_cond, &queue->mutex);
-    }
-    // Increement the count of threads reading the queue
-    queue->threads_reading += 1;
-    // give back the lock we took at the start.
-    pthread_mutex_unlock(&queue->mutex);
-}
-
-/**
- * Gives back a reading lock.
- *
- * @param queue the queue to return the read lock for.
- */
-static void release_read_lock(queue_t *queue) {
-    // lock the queue's mutex for this notification.
-    pthread_mutex_lock(&queue->mutex);
-    // decrement the count of the number of threads reading the queue.
-    if (queue->threads_reading - 1 >= 0) {
-        queue->threads_reading -= 1;
-    }
-
-    assert(queue->threads_reading >= 0);
-
-    // If there are no other threads reading, just broadcast to the threads waiting
-    // for a write lock as any thread wanting to read will need to get a lock anyway.
-    if (queue->threads_reading == 0) {
-        pthread_cond_broadcast(&queue->reading_cond);
-        pthread_cond_broadcast(&queue->writing_cond);
-    }
-    // release the lock we took at the start.
-    pthread_mutex_unlock(&queue->mutex);
-}
-
-/**
  * Creates a new heap-allocated FIFO queue. The queue is initially empty.
  *
  * @return a pointer to the new queue

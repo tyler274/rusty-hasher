@@ -7,7 +7,15 @@
         "pthreadtypes.h": "c",
         "cstdlib": "c",
         "queue.h": "c",
-        "functional": "c"
+        "functional": "c",
+        "dictionary_words.h": "c",
+        "string": "c",
+        "vector": "c",
+        "memory": "c",
+        "optional": "c",
+        "string_view": "c",
+        "system_error": "c",
+        "thread": "c"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "makefile.launchConfigurations": [

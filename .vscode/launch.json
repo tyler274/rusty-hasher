@@ -63,6 +63,38 @@
             "timezone": ""
         },
         {
+            "name": "(UDB) password_cracker",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/password_cracker",
+            "args": [
+                "<",
+                "hashes.txt"
+            ],
+            "preLaunchTask": "(DEBUG) build password_cracker",
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "miDebuggerPath": "udb",
+            "miDebuggerArgs": "",
+            "logging": {
+                "trace": false,
+                "traceResponse": false,
+                "engineLogging": false
+            },
+            "udb": true,
+            "timezone": ""
+        },
+        {
             "name": "(UDB) mqueue_multiple_queues",
             "type": "cppdbg",
             "request": "launch",
