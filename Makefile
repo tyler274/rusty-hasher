@@ -51,6 +51,9 @@ bin/%: bin/%.o bin/queue.o bin/thread_pool.o
 bin/password_cracker: bin/password_cracker.o bin/queue.o bin/thread_pool.o
 	$(CC) $(CFLAGS) -lcrypt -lpthread $^ -o $@
 
+bin/mqueue_multiple_queues: bin/mqueue_multiple_queues.o bin/queue.o bin/thread_pool.o
+	$(CC) $(CFLAGS) -lpthread $^ -o $@
+
 mqueue_push_pop-result: tests/mqueue_push_pop-actual-sorted.txt
 	diff -u tests/correct_integers.txt $^ \
 		&& echo "\e[32mPASSED test mqueue_push_pop\e[39m" \
