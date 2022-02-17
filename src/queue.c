@@ -20,7 +20,7 @@ struct queue {
     // faithful.
     pthread_mutex_t mutex;
     pthread_cond_t writing_cond;
-    pthread_cond_t reading_cond;
+
     size_t threads_reading;
 };
 
@@ -62,9 +62,9 @@ static void get_write_lock_dequeue(queue_t *queue) {
  * @param queue the queue to get a write lock for.
  */
 static void release_write_lock(queue_t *queue) {
-    // Broadcast to everyone listening on the reading and writing conditions that they may
+    // Broadcast to everyone listening on the writing conditions that they may
     // have something to do.
-    pthread_cond_broadcast(&queue->reading_cond);
+
     pthread_cond_broadcast(&queue->writing_cond);
     // unlock the mutex.
     pthread_mutex_unlock(&queue->mutex);
@@ -88,8 +88,6 @@ queue_t *queue_init(void) {
     // initializes the mutex and conditions.
     int pthread_error = 0;
     pthread_error = pthread_mutex_init(&queue->mutex, NULL);
-    assert(!pthread_error);
-    pthread_error = pthread_cond_init(&queue->reading_cond, NULL);
     assert(!pthread_error);
     pthread_error = pthread_cond_init(&queue->writing_cond, NULL);
     assert(!pthread_error);
@@ -276,7 +274,7 @@ void queue_free(queue_t *queue) {
     // free the pthread items
     // TODO: make sure this doesnt footgun threads
     pthread_mutex_destroy(&queue->mutex);
-    pthread_cond_destroy(&queue->reading_cond);
+
     pthread_cond_destroy(&queue->writing_cond);
     // free the heap allocated queue itself.
     free(queue);
