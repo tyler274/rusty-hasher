@@ -15,7 +15,10 @@
         "optional": "c",
         "string_view": "c",
         "system_error": "c",
-        "thread": "c"
+        "thread": "c",
+        "*.tcc": "c",
+        "istream": "c",
+        "crypt.h": "c"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "makefile.launchConfigurations": [
