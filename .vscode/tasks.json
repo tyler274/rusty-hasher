@@ -4,6 +4,17 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "(cargo) build password_cracker",
+            "args": [
+                "build",
+                "-v",
+                "--bin",
+                "password_cracker"
+            ],
+            "command": "cargo",
+            "group": "build",
+        },
+        {
             "label": "(DEBUG) build password_cracker",
             "type": "shell",
             "command": "make",

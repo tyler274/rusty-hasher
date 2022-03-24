@@ -1,4 +1,4 @@
-pub const DICTIONARY: [&str; 72324] = [
+pub const DICTIONARY: &'static [&str; 72324] = &[
     "justness",
     "ad",
     "grafter",
