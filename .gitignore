@@ -5,3 +5,4 @@ tests/*-actual*.txt
 
 target/*
 .vscode/*.log
+compile_commands.json

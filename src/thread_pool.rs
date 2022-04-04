@@ -7,6 +7,15 @@ pub struct ThreadPool<'scope, 'env> {
     sender: mpsc::Sender<Job<'env>>,
 }
 
+// impl<'scope, 'env> Clone for ThreadPool<'scope, 'env> {
+//     fn clone(&self) -> Self {
+//         Self {
+//             workers: self.workers.clone(),
+//             sender: self.sender.clone(),
+//         }
+//     }
+// }
+
 type Job<'env> = Box<dyn FnOnce() + Send + 'env>;
 
 impl<'scope, 'env> ThreadPool<'scope, 'env> {
