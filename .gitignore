@@ -1,6 +1,7 @@
-bin
+bin/
 .debug
 hashes.txt
 tests/*-actual*.txt
 
 target/*
+.vscode/*.log
