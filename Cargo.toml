@@ -7,6 +7,5 @@ repository = "https://github.com/tyler274/rusty-hasher"
 description = "A simple scoped threadpool implementation and related tests including a password hasher"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
-# libc = "0.2.121"
+[dev-dependencies]
 pwhash = "1"
