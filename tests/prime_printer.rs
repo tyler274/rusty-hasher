@@ -1,6 +1,6 @@
 #![feature(scoped_threads)]
 mod common;
-use scoped_threadpool::ThreadPool;
+use scoped_threadpool_std::ThreadPool;
 
 pub const MAX_CANDIDATE: u64 = 100000;
 const NUM_THREADS_PER_POOL: usize = 8;

@@ -1,5 +1,5 @@
 #![feature(scoped_threads)]
-use scoped_threadpool::ThreadPool;
+use scoped_threadpool_std::ThreadPool;
 // #[no_mangle]
 // pub static mut MAX_QUEUE_SIZE: size_t = 100000 as libc::c_int as size_t;
 // #[no_mangle]

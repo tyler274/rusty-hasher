@@ -1,5 +1,5 @@
 [package]
-name = "scoped-threadpool"
+name = "scoped-threadpool-std"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
