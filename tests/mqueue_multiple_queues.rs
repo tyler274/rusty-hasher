@@ -1,5 +1,5 @@
 #![feature(scoped_threads)]
-use rusty_hasher::thread_pool::ThreadPool;
+use scoped_threadpool::ThreadPool;
 
 // #[no_mangle]
 // pub static mut QUEUES: size_t = 10 as libc::c_int as size_t;

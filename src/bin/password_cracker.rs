@@ -3,8 +3,8 @@
 use std::io;
 
 use pwhash::sha512_crypt;
-use rusty_hasher::dictionary_words::DICTIONARY;
-use rusty_hasher::thread_pool::ThreadPool;
+use scoped_threadpool::dictionary_words::DICTIONARY;
+use scoped_threadpool::thread_pool::ThreadPool;
 
 pub const HASH_START: &str = "$6$";
 

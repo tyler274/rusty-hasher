@@ -1,5 +1,5 @@
 #![feature(scoped_threads)]
-use rusty_hasher::thread_pool::ThreadPool;
+use scoped_threadpool::ThreadPool;
 // #[no_mangle]
 // pub static mut MAX_QUEUE_SIZE: size_t = 100000 as libc::c_int as size_t;
 // #[no_mangle]

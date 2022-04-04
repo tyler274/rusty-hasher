@@ -1,7 +1,7 @@
 #![feature(scoped_threads)]
 use std::{thread, time::Duration};
 
-use rusty_hasher::thread_pool::ThreadPool;
+use scoped_threadpool::ThreadPool;
 
 pub const NS_PER_SEC: Duration = Duration::from_nanos(1_000_000_000);
 
