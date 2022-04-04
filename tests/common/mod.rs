@@ -13,3 +13,6 @@ pub fn check_prime(n: u64) {
     }
     println!("{n}");
 }
+
+pub mod dictionary_words;
+use dictionary_words::*;

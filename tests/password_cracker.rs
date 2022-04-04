@@ -3,7 +3,8 @@
 use std::io;
 
 use pwhash::sha512_crypt;
-use scoped_threadpool_std::dictionary_words::DICTIONARY;
+mod common;
+use common::dictionary_words::DICTIONARY;
 use scoped_threadpool_std::ThreadPool;
 
 pub const HASH_START: &str = "$6$";

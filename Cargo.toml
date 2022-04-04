@@ -8,5 +8,5 @@ description = "A simple scoped threadpool implementation and related tests inclu
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-libc = "0.2.121"
+# libc = "0.2.121"
 pwhash = "1"
