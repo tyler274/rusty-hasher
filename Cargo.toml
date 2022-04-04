@@ -1,6 +1,6 @@
 [package]
 name = "scoped-threadpool-std"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/tyler274/rusty-hasher"
